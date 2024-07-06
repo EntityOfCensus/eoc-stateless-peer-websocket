@@ -13,5 +13,8 @@
     "@cloudflare/vitest-pool-workers": "^0.4.5",
     "vitest": "1.5.0",
     "wrangler": "^3.60.3"
+  },
+  "dependencies": {
+    "itty-router": "^5.0.17"
   }
 }

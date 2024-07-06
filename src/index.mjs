@@ -67,6 +67,7 @@ export { ChatRoom , RateLimiter }
 import HTML from "./index.html";
 
 
+
 // `handleErrors()` is a little utility function that can wrap an HTTP request handler in a
 // try/catch and return errors to the client. You probably wouldn't want to use this in production
 // code but it is convenient when debugging and iterating.
@@ -174,12 +175,10 @@ async function handleApiRequest(path, request, env) {
         // for private rooms. `idFromString()` simply parses the text as a hex encoding of the raw
         // ID (and verifies that this is a valid ID for this namespace).
         id = env.rooms.idFromString(name);
-      } else if (name.length <= 32) {
+      } else {
         // Treat as a string room name (limited to 32 characters). `idFromName()` consistently
         // derives an ID from a string.
         id = env.rooms.idFromName(name);
-      } else {
-        return new Response("Name too long", {status: 404});
       }
 
       // Get the Durable Object stub for this room! The stub is a client object that can be used
@@ -198,7 +197,7 @@ async function handleApiRequest(path, request, env) {
       // Send the request to the object. The `fetch()` method of a Durable Object stub has the
       // same signature as the global `fetch()` function, but the request is always sent to the
       // object, regardless of the request's URL.
-      return roomObject.fetch(newUrl, request);
+      return new Response(roomObject.fetch(newUrl, request), {headers: {"Access-Control-Allow-Origin": "*"}});
     }
 
     default:

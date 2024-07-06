@@ -74,7 +74,7 @@ export class ChatRoom {
 			await this.handleSession(pair[1], ip);
 
 			// Now we return the other end of the pair to the client.
-			return new Response(null, { status: 101, webSocket: pair[0] });
+			return new Response(null, { status: 101, webSocket: pair[0] }, {headers: {"Access-Control-Allow-Origin": "*"}});
 		  }
 
 		  default:
@@ -151,11 +151,11 @@ export class ChatRoom {
 
 		  // Don't let people use ridiculously long names. (This is also enforced on the client,
 		  // so if they get here they are not using the intended client.)
-		  if (session.name.length > 32) {
-			webSocket.send(JSON.stringify({error: "Name too long."}));
-			webSocket.close(1009, "Name too long.");
-			return;
-		  }
+		//   if (session.name.length > 32) {
+		// 	webSocket.send(JSON.stringify({error: "Name too long."}));
+		// 	webSocket.close(1009, "Name too long.");
+		// 	return;
+		//   }
 
 		  // Deliver all the messages we queued up since the user connected.
 		  session.blockedMessages.forEach(queued => {
@@ -175,10 +175,10 @@ export class ChatRoom {
 
 		// Block people from sending overly long messages. This is also enforced on the client,
 		// so to trigger this the user must be bypassing the client code.
-		if (data.message.length > 256) {
-		  webSocket.send(JSON.stringify({error: "Message too long."}));
-		  return;
-		}
+		// if (data.message.length > 256) {
+		//   webSocket.send(JSON.stringify({error: "Message too long."}));
+		//   return;
+		// }
 
 		// Add timestamp. Here's where this.lastTimestamp comes in -- if we receive a bunch of
 		// messages at the same time (or if the clock somehow goes backwards????), we'll assign
