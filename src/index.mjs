@@ -213,7 +213,7 @@ export class ChatRoom {
 
     // `state.storage` provides access to our durable storage. It provides a simple KV
     // get()/put() interface.
-    this.storage = state.storage;
+    // this.storage = state.storage;
 
     // `env` is our environment bindings (discussed earlier).
     this.env = env;
@@ -313,12 +313,12 @@ export class ChatRoom {
 
     // Load the last 100 messages from the chat history stored on disk, and send them to the
     // client.
-    let storage = await this.storage.list({reverse: true, limit: 100});
-    let backlog = [...storage.values()];
-    backlog.reverse();
-    backlog.forEach(value => {
-      session.blockedMessages.push(value);
-    });
+    // let storage = await this.storage.list({reverse: true, limit: 100});
+    // let backlog = [...storage.values()];
+    // backlog.reverse();
+    // backlog.forEach(value => {
+    //   session.blockedMessages.push(value);
+    // });
   }
 
   async webSocketMessage(webSocket, msg) {
@@ -395,7 +395,7 @@ export class ChatRoom {
 
       // Save message.
       let key = new Date(data.timestamp).toISOString();
-      await this.storage.put(key, dataStr);
+      // await this.storage.put(key, dataStr);
     } catch (err) {
       // Report any exceptions directly back to the client. As with our handleErrors() this
       // probably isn't what you'd want to do in production, but it's convenient when testing.
